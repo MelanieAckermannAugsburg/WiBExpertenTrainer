@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WiB-Trainer · Expert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#10181F;
+  --panel:#182430;
+  --panel-2:#213240;
+  --line:#2B4152;
+  --chalk:#F1EFE7;
+  --dim:#9AAEBA;
+  --gold:#F5B22C;
+  --green:#4FCB8D;
+  --green-bg:#1E4030;
+  --red:#E86A6A;
+  --red-bg:#4A2530;
+  --blue:#5BB8DE;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  background:var(--bg);
+  background-image:radial-gradient(800px 400px at 50% -10%, #1A2B38 0%, transparent 60%);
+  color:var(--chalk);font-family:'Nunito',system-ui,sans-serif;
+  font-size:19px;line-height:1.5;min-height:100vh;
+}
+h1,h2{font-family:'Staatliches',Impact,sans-serif;letter-spacing:.04em;font-weight:400}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:560px;margin:0 auto;padding:22px 16px 60px}
+.hidden{display:none!important}
+
+/* ---------- Home ---------- */
+#home h1{font-size:2.5rem;color:var(--gold);text-align:center}
+#home .sub{text-align:center;color:var(--dim);margin:6px 0 24px;font-size:.98rem}
+.level{
+  width:100%;background:var(--panel);border:2px solid var(--line);border-radius:16px;
+  padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;
+  color:var(--chalk);text-align:left;transition:border-color .15s;
+}
+.level:active{border-color:var(--gold)}
+.level .li{font-size:1.9rem;width:44px;text-align:center;flex-shrink:0}
+.level .lt{flex:1}
+.level .lt b{font-size:1.1rem;display:block}
+.level .lt span{font-size:.85rem;color:var(--dim);font-weight:700}
+.level .stars{font-size:1.05rem;flex-shrink:0}
+.level.mix{border-color:var(--gold);border-style:dashed}
+.homehint{color:var(--dim);font-size:.88rem;text-align:center;margin-top:18px}
+
+/* ---------- Quiz ---------- */
+#quizTop{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.backbtn{
+  background:transparent;border:2px solid var(--line);color:var(--dim);
+  border-radius:10px;padding:6px 14px;font-weight:800;font-size:.85rem;flex-shrink:0;
+}
+#quizTitle{font-family:'Staatliches',sans-serif;font-size:1.1rem;color:var(--dim);flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.progressbar{height:12px;background:var(--panel-2);border-radius:999px;overflow:hidden;
+  border:1px solid var(--line);margin-bottom:20px}
+.progressbar div{height:100%;background:var(--gold);width:0;transition:width .3s;border-radius:999px}
+#repeatTag{
+  display:inline-block;background:var(--panel-2);border:1px solid var(--gold);color:var(--gold);
+  border-radius:999px;padding:2px 14px;font-size:.8rem;font-weight:800;margin-bottom:12px;
+}
+.multitag{
+  display:inline-block;background:var(--panel-2);border:1px solid var(--blue);color:var(--blue);
+  border-radius:999px;padding:2px 14px;font-size:.8rem;font-weight:800;margin-bottom:12px;
+}
+#qText{font-size:1.25rem;font-weight:800;margin-bottom:20px}
+.opt{
+  display:block;width:100%;text-align:left;background:var(--panel);
+  border:2px solid var(--line);color:var(--chalk);border-radius:14px;
+  padding:15px 18px;margin-bottom:12px;font-size:1.04rem;font-weight:700;
+  min-height:56px;transition:border-color .1s;
+}
+.opt:active{border-color:var(--gold)}
+.opt.picked{border-color:var(--blue);background:#1F3A49}
+.opt.right{background:var(--green-bg);border-color:var(--green)}
+.opt.wrong{background:var(--red-bg);border-color:var(--red)}
+.opt.missed{border-color:var(--gold);border-style:dashed}
+.opt.faded{opacity:.45}
+.opt:disabled{cursor:default}
+#checkBtn,#nextBtn{
+  width:100%;margin-top:10px;font-family:'Staatliches',sans-serif;font-size:1.45rem;
+  letter-spacing:.05em;background:var(--gold);color:#241C08;border:none;border-radius:14px;
+  padding:15px;box-shadow:0 4px 0 #B3811E;
+}
+#checkBtn:active,#nextBtn:active{transform:translateY(2px);box-shadow:0 2px 0 #B3811E}
+#explain{
+  border-radius:12px;padding:14px 16px;font-size:.98rem;margin-top:8px;
+  border-left:5px solid var(--green);background:var(--green-bg);
+}
+#explain.bad{border-left-color:var(--red);background:var(--red-bg)}
+#explain b{display:block;margin-bottom:2px;font-size:1.02rem}
+
+/* ---------- Done ---------- */
+#done{text-align:center;padding-top:30px}
+#done .bigstars{font-size:3rem;letter-spacing:.1em;margin:10px 0}
+#done h2{font-size:2rem;color:var(--gold);margin-bottom:8px}
+#done p{color:var(--dim);margin-bottom:8px}
+#done .dstats{font-size:1.05rem;color:var(--chalk);margin-bottom:24px;font-weight:800}
+.dbtn{
+  display:block;width:100%;margin-bottom:12px;font-family:'Staatliches',sans-serif;
+  font-size:1.3rem;letter-spacing:.05em;border-radius:14px;padding:14px;border:none;
+}
+.dbtn.gold{background:var(--gold);color:#241C08;box-shadow:0 4px 0 #B3811E}
+.dbtn.plain{background:var(--panel-2);color:var(--chalk);border:2px solid var(--line)}
+.dbtn:active{transform:translateY(2px)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ================= HOME ================= -->
+<div id="home" class="wrap">
+  <h1>WiB-Trainer · Expert</h1>
+  <p class="sub">Prüfungsniveau mit Transferfällen und Fallen.<br>Alle Antworten klingen plausibel – lies genau.<br>Alles zum Antippen, kein Schreiben.</p>
+  <div id="levelList"></div>
+  <p class="homehint">Falsch beantwortete Fragen kommen am Ende automatisch noch einmal.<br>Ziel: ★★★ in jedem Thema – dann bist du bereit.</p>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div id="quiz" class="wrap hidden">
+  <div id="quizTop">
+    <button class="backbtn" onclick="goHome()">← Menü</button>
+    <span id="quizTitle"></span>
+  </div>
+  <div class="progressbar"><div id="pbar"></div></div>
+  <div id="qArea"></div>
+</div>
+
+<!-- ================= DONE ================= -->
+<div id="done" class="wrap hidden">
+  <div class="bigstars" id="dStars"></div>
+  <h2 id="dTitle"></h2>
+  <p id="dMsg"></p>
+  <p class="dstats" id="dStats"></p>
+  <button class="dbtn gold" id="dNext"></button>
+  <button class="dbtn plain" onclick="startLevel(curLevel)">Thema wiederholen</button>
+  <button class="dbtn plain" onclick="goHome()">Zum Menü</button>
+</div>
+
+<script>
+/* =====================================================
+   FRAGEN – Expert-Niveau
+   Typen:
+   mc    : eine richtige Antwort (a = Index), plausible Distraktoren
+   tf    : Richtig/Falsch (Reihenfolge fest)
+   multi : mehrere richtige (c:true) – nur die exakte Auswahl zählt!
+   x = kurze Erklärung
+===================================================== */
+const LEVELS=[
+{ icon:"🤝", name:"Pflichten in der Ausbildung", qs:[
+ {t:"mc",q:"Wer kontrolliert das Berichtsheft – und wer führt es?",
+  o:["Der Ausbilder kontrolliert, der Azubi führt es","Der Azubi kontrolliert, der Ausbilder führt es","Beide führen es abwechselnd","Die Berufsschule führt und kontrolliert es"],a:0,
+  x:"Führen = Pflicht des Azubis. Kontrollieren = Pflicht des Ausbilders."},
+ {t:"mc",q:"SORGEpflicht und SORGFALTSpflicht – wer hat was?",
+  o:["Sorgepflicht: Ausbilder · Sorgfaltspflicht: Azubi","Sorgepflicht: Azubi · Sorgfaltspflicht: Ausbilder","Beides sind Pflichten des Azubis","Beides sind Pflichten des Ausbilders"],a:0,
+  x:"Der Ausbilder SORGT für den Azubi (Schutz). Der Azubi arbeitet SORGFÄLTIG (Werkzeug, Material)."},
+ {t:"tf",q:"Azubi Nina ist krank. Es reicht, wenn sie am nächsten Tag im Betrieb Bescheid gibt.",
+  o:["Richtig","Falsch"],a:1,
+  x:"Meldepflicht heißt: SOFORT Bescheid geben – am besten vor Arbeitsbeginn."},
+ {t:"tf",q:"Azubi Kaan erzählt zu Hause von einem geheimen neuen Produkt. Solange nichts im Internet landet, ist das erlaubt.",
+  o:["Richtig","Falsch"],a:1,
+  x:"Betriebsgeheimnisse bleiben im Betrieb – auch gegenüber Familie und Freunden."},
+ {t:"mc",q:"Der Ausbilder gibt Azubi Lara eine Aufgabe, die ihr keinen Spaß macht. Die Aufgabe gehört zur Ausbildung. Was gilt?",
+  o:["Lara muss die Weisung befolgen","Lara darf ablehnen, wenn sie es begründet","Lara darf die Aufgabe an einen anderen Azubi weitergeben","Lara muss erst ihre Eltern fragen"],a:0,
+  x:"Weisungen des Ausbilders muss der Azubi befolgen – solange sie zur Ausbildung gehören."},
+ {t:"mc",q:"Azubi Jan soll seit Wochen fast nur Kaffee kochen und den Hof fegen. Was stimmt?",
+  o:["Der Ausbilder verletzt seine Pflicht, Ausbildungsinhalte zu vermitteln","Das ist normal – der Azubi muss alle Weisungen befolgen","Das ist erlaubt, wenn Jan dafür früher gehen darf","Das ist nur in der Probezeit verboten"],a:0,
+  x:"Der Ausbilder MUSS die Inhalte des Berufs vermitteln. Dauerhaft nur Hilfsarbeiten verletzen diese Pflicht."},
+ {t:"multi",q:"Welche davon sind Pflichten des AZUBIS? Wähle alle richtigen.",
+  o:[{t:"Berichtsheft führen",c:true},{t:"Vergütung bezahlen",c:false},{t:"Weisungen befolgen",c:true},{t:"Urlaub gewähren",c:false},{t:"Betriebsgeheimnisse wahren",c:true},{t:"Zeugnis ausstellen",c:false}],
+  x:"Der Azubi: führt das Berichtsheft, befolgt Weisungen, wahrt Geheimnisse. Vergütung, Urlaub und Zeugnis sind Sache des Ausbilders."}
+]},
+{ icon:"📝", name:"Vertrag & Wege nach der Schule", qs:[
+ {t:"multi",q:"Was MUSS im Ausbildungsvertrag stehen? Wähle alle richtigen.",
+  o:[{t:"Probezeit",c:true},{t:"Vergütung",c:true},{t:"Schulnoten des Azubis",c:false},{t:"Urlaub",c:true},{t:"Hobbys des Azubis",c:false},{t:"Tägliche Arbeitszeit",c:true}],
+  x:"In den Vertrag gehören z.B.: Probezeit, Vergütung, Urlaub, Arbeitszeit, Beruf, Beginn und Ende. Noten und Hobbys nicht."},
+ {t:"mc",q:"Im Vertrag steht: „Probezeit: 6 Monate.“ Beide haben unterschrieben. Was gilt?",
+  o:["Die Klausel ist unzulässig – erlaubt sind höchstens 4 Monate","Sie gilt, weil beide unterschrieben haben","Sie gilt, wenn der Betrieb es gut begründet","Probezeiten sind in der Ausbildung ganz verboten"],a:0,
+  x:"Die Probezeit dauert 1 bis 4 Monate. Auch eine Unterschrift macht eine unzulässige Klausel nicht gültig."},
+ {t:"mc",q:"Im Vertrag steht: „Urlaub: 0 Tage – Azubis brauchen keine Erholung.“ Was gilt?",
+  o:["Unzulässig – Urlaub zu gewähren ist Pflicht des Ausbilders","Gültig, wenn der Azubi dafür mehr Geld bekommt","Gültig im ersten Ausbildungsjahr","Der Azubi kann Urlaub nur beim Arbeitsamt beantragen"],a:0,
+  x:"Urlaub gewähren ist eine Pflicht des Ausbilders und muss im Vertrag stehen."},
+ {t:"mc",q:"Melih (15) macht den Mittelschulabschluss. Sein Traum: an der Uni studieren. Was stimmt?",
+  o:["Direkt geht das nicht – für die Uni braucht er erst höhere Abschlüsse (z.B. Abitur)","Er kann sich direkt an der Uni bewerben","Mit einem Praktikum darf er sofort studieren","Studieren geht ab 18 automatisch"],a:0,
+  x:"Uni-Studium braucht das Abitur. Aber: Der Weg dorthin ist offen – z.B. über M-Zug, Ausbildung + Weiterbildung."},
+ {t:"multi",q:"Welche Wege stehen DIREKT nach dem Mittelschulabschluss offen? Wähle alle richtigen.",
+  o:[{t:"Duale Ausbildung",c:true},{t:"Berufsfachschule (z.B. Pflege)",c:true},{t:"Uni-Studium",c:false},{t:"Freiwilliges Soziales Jahr",c:true},{t:"Meisterprüfung",c:false},{t:"Berufsvorbereitungsjahr",c:true}],
+  x:"Meister wird man erst NACH einer Ausbildung. Uni braucht Abitur. Der Rest steht offen."},
+ {t:"tf",q:"„Dual“ bedeutet: Man lernt an zwei Orten – im Betrieb und in der Berufsschule.",
+  o:["Richtig","Falsch"],a:0,
+  x:"Genau das ist die duale Ausbildung: Praxis im Betrieb + Theorie in der Berufsschule."}
+]},
+{ icon:"🛡️", name:"Sozialversicherungen", qs:[
+ {t:"multi",q:"Hier verstecken sich private Versicherungen. Wähle NUR die 5 gesetzlichen Sozialversicherungen.",
+  o:[{t:"Rentenversicherung",c:true},{t:"Haftpflichtversicherung",c:false},{t:"Krankenversicherung",c:true},{t:"Kfz-Versicherung",c:false},{t:"Arbeitslosenversicherung",c:true},{t:"Hausratversicherung",c:false},{t:"Pflegeversicherung",c:true},{t:"Unfallversicherung",c:true}],
+  x:"KRAPU: Kranken, Renten, Arbeitslosen, Pflege, Unfall. Haftpflicht, Kfz und Hausrat sind private Versicherungen."},
+ {t:"mc",q:"Azubi Deniz stürzt auf dem WEG ZUR ARBEIT mit dem Fahrrad. Welche Versicherung ist zuständig?",
+  o:["Unfallversicherung – sie gilt auch für den Arbeitsweg","Krankenversicherung – er war ja noch nicht im Betrieb","Haftpflichtversicherung","Pflegeversicherung"],a:0,
+  x:"Die Unfallversicherung deckt Arbeit UND Arbeitsweg (Wegeunfall)."},
+ {t:"mc",q:"Frau Nowak bricht sich am WOCHENENDE beim Fußball das Bein. Wer zahlt die Behandlung?",
+  o:["Die Krankenversicherung","Die Unfallversicherung – es war ja ein Unfall","Die Pflegeversicherung","Niemand – Sport ist Privatsache"],a:0,
+  x:"Falle! Die Unfallversicherung gilt NUR bei Arbeit und Arbeitsweg. Freizeitunfälle zahlt die Krankenversicherung."},
+ {t:"mc",q:"Herr Yildiz kann nach einem Schlaganfall DAUERHAFT nicht mehr allein essen und sich waschen. Ein Dienst hilft täglich. Welche Versicherung zahlt diese Hilfe?",
+  o:["Die Pflegeversicherung","Die Krankenversicherung – er ist ja krank","Die Rentenversicherung","Die Unfallversicherung"],a:0,
+  x:"Knifflig: Die Krankenversicherung zahlt die BEHANDLUNG. Die dauerhafte Hilfe im ALLTAG zahlt die Pflegeversicherung."},
+ {t:"mc",q:"Herr Costa hat 45 Jahre gearbeitet und beendet sein Arbeitsleben. Welche Versicherung zahlt ihm nun monatlich Geld?",
+  o:["Rentenversicherung","Arbeitslosenversicherung – er arbeitet ja nicht mehr","Pflegeversicherung","Unfallversicherung"],a:0,
+  x:"Rente ≠ arbeitslos: Wer sein Arbeitsleben regulär beendet, bekommt Rente."},
+ {t:"mc",q:"Die Firma von Herrn Braun geht pleite. Er verliert seinen Job und sucht einen neuen. Welche Versicherung zahlt in dieser Zeit?",
+  o:["Arbeitslosenversicherung","Rentenversicherung","Unfallversicherung","Hausratversicherung"],a:0,
+  x:"Bei Jobverlust überbrückt die Arbeitslosenversicherung, bis eine neue Stelle gefunden ist."},
+ {t:"tf",q:"Die Unfallversicherung zahlt auch, wenn man beim Einkaufen am Samstag stürzt.",
+  o:["Richtig","Falsch"],a:1,
+  x:"Nein – nur Arbeit und Arbeitsweg. Der Samstagseinkauf ist Freizeit → Krankenversicherung."}
+]},
+{ icon:"💳", name:"Bezahlen: Dauerauftrag & Co.", qs:[
+ {t:"mc",q:"Fitnessstudio: jeden Monat genau 29,90 €. Das STUDIO bucht das Geld selbst vom Konto ab. Was ist das?",
+  o:["Lastschrift","Dauerauftrag – der Betrag ist ja immer gleich","Überweisung","Bargeld-Einzahlung"],a:0,
+  x:"Falle! Entscheidend ist nicht der Betrag, sondern WER die Zahlung auslöst. Die Firma bucht ab → Lastschrift."},
+ {t:"mc",q:"Jonas richtet bei SEINER BANK ein: „Überweise jeden Monat 480 € Miete an den Vermieter.“ Was ist das?",
+  o:["Dauerauftrag","Lastschrift","Einzugsermächtigung","Kredit"],a:0,
+  x:"Jonas gibt selbst den Auftrag, gleicher Betrag, regelmäßig → Dauerauftrag. Klassisch für die Miete."},
+ {t:"mc",q:"Worauf kommt es beim Unterschied Dauerauftrag / Lastschrift WIRKLICH an?",
+  o:["Wer die Zahlung auslöst: ich selbst oder die Firma","Wie hoch der Betrag ist","Ob monatlich oder jährlich gezahlt wird","Ob man online oder am Schalter zahlt"],a:0,
+  x:"Dauerauftrag: ICH beauftrage meine Bank. Lastschrift: die FIRMA holt sich das Geld."},
+ {t:"mc",q:"Einmalige Rechnung vom Zahnarzt über 120 €. Welche Zahlungsart passt am besten?",
+  o:["Überweisung","Dauerauftrag","Lastschrift einrichten","Es geht nur bar in der Praxis"],a:0,
+  x:"Einmalige Rechnung → einmalige Überweisung. Dauerauftrag lohnt nur bei regelmäßig gleichen Beträgen."},
+ {t:"multi",q:"Wähle ALLE bargeldlosen Zahlungsarten.",
+  o:[{t:"Girocard / EC-Karte",c:true},{t:"Apple Pay / Google Pay",c:true},{t:"Münzen",c:false},{t:"PayPal / Klarna",c:true},{t:"Überweisung",c:true},{t:"Pfandbon",c:false}],
+  x:"Bargeldlos = ohne Münzen und Scheine. Auch die Überweisung zählt dazu."},
+ {t:"mc",q:"Im Supermarkt fällt das Kassensystem aus. Welchen Nachteil der Kartenzahlung zeigt das?",
+  o:["Ohne funktionierendes System ist Kartenzahlung nicht möglich","Karten sind unhygienisch","Kartenzahlung ist zu langsam","Mit Karte verliert man seine Daten"],a:0,
+  x:"Karte braucht Technik. Fällt das System aus, geht nur noch Bargeld."},
+ {t:"tf",q:"Wer mit Karte zahlt, behält automatisch besser den Überblick über sein Geld.",
+  o:["Richtig","Falsch"],a:1,
+  x:"Eher das Gegenteil: Beim Kartenzahlen merkt man oft nicht, wie viel man schon ausgegeben hat."}
+]},
+{ icon:"🏦", name:"Bank, Sparen & Kredit", qs:[
+ {t:"multi",q:"Was sind Aufgaben einer Bank? Wähle alle richtigen.",
+  o:[{t:"Konten verwalten",c:true},{t:"Kredite vergeben",c:true},{t:"Steuern festlegen",c:false},{t:"Währungen wechseln",c:true},{t:"Gehälter aller Firmen bestimmen",c:false},{t:"Beim Sparen beraten",c:true}],
+  x:"Banken verwalten, verleihen, wechseln, beraten. Steuern legt der Staat fest, Gehälter die Firmen (bzw. Tarifverträge)."},
+ {t:"mc",q:"Lena (17) will nächstes Jahr in die erste eigene Wohnung ziehen. Warum ist Sparen für sie jetzt sinnvoll?",
+  o:["Kaution, Möbel und Umzug kosten viel – Rücklagen machen sie unabhängig","Damit die Bank ihr später mehr Zinsen berechnet","Weil man ohne Sparbuch keine Wohnung mieten darf","Sparen ist nur für Rentner sinnvoll"],a:0,
+  x:"Große Schritte (Auszug, Anschaffungen) klappen mit Erspartem – ohne teure Schulden."},
+ {t:"mc",q:"Was ist ein Kredit?",
+  o:["Geliehenes Geld von der Bank, das man mit Zinsen zurückzahlt","Ein Geschenk der Bank an gute Kunden","Ein Sparkonto mit hohen Zinsen","Ein anderes Wort für Dauerauftrag"],a:0,
+  x:"Kredit = geliehenes Geld. Man zahlt es MIT Zinsen zurück – also mehr, als man bekommen hat."},
+ {t:"mc",q:"Herr Weber sagt: „Ich spare nicht. Wenn etwas kaputt geht, nehme ich einfach einen Kredit.“ Wo liegt das Risiko?",
+  o:["Kredite kosten Zinsen – ohne Rücklagen drohen schnell Schulden","Es gibt kein Risiko, Kredite sind kostenlos","Banken vergeben Kredite nur an Firmen","Kredite gibt es nur für Autos"],a:0,
+  x:"Wer alles über Kredite löst, zahlt drauf – und rutscht bei Problemen schnell in die Schuldenfalle."},
+ {t:"mc",q:"Welcher „Spargrund“ ist UNSINN?",
+  o:["„Gespartes Geld überweist die Miete dann von allein“","Sparen für Notfälle wie eine kaputte Waschmaschine","Sparen für den Auszug von zu Hause","Sparen, um später zu investieren"],a:0,
+  x:"Geld handelt nicht von allein. Notfälle, Auszug und Vermögensaufbau sind dagegen echte Spargründe."},
+ {t:"tf",q:"Ausländisches Geld wechseln (z.B. Euro in Dollar) ist eine Aufgabe der Bank.",
+  o:["Richtig","Falsch"],a:0,
+  x:"Ja, der Währungstausch gehört zu den klassischen Bankaufgaben."}
+]},
+{ icon:"🚀", name:"Beruf, Zukunft & Bewerbung", qs:[
+ {t:"mc",q:"Vorstellungsgespräch, Frage nach den Stärken. Vier Antworten – nur EINE ist wirklich stark. Welche?",
+  o:["„Ich bin zuverlässig – in meiner Fußballmannschaft kann sich jede:r auf mich verlassen, ich sage nie kurzfristig ab.“","„Ich bin teamfähig, flexibel, kreativ, belastbar, pünktlich und motiviert.“","„Ich habe eigentlich keine Schwächen.“","„Das steht doch alles in meinem Lebenslauf.“"],a:0,
+  x:"Die Formel: EINE Stärke nennen + mit konkretem Beispiel belegen. Reines Aufzählen wirkt auswendig gelernt."},
+ {t:"mc",q:"Warum ist die Antwort mit dem Fußball-Beispiel die beste?",
+  o:["Das Beispiel macht die Stärke glaubwürdig und überprüfbar","Weil Sport bei allen Chefs gut ankommt","Weil sie am längsten ist","Weil man im Gespräch immer über Hobbys reden soll"],a:0,
+  x:"Behaupten kann man viel – ein Beispiel BELEGT die Stärke."},
+ {t:"mc",q:"Als die Schichten kurzfristig getauscht werden, sagt Tom: „Kein Problem, ich stelle mich um.“ Welche Schlüsselqualifikation zeigt er?",
+  o:["Flexibilität","Mobilität","Lernbereitschaft","Teamfähigkeit"],a:0,
+  x:"Flexibel = sich an VERÄNDERUNGEN anpassen (Zeiten, Aufgaben). Mobilität wäre ein Orts-Wechsel."},
+ {t:"mc",q:"Aylin springt für zwei Wochen in der Filiale in der Nachbarstadt ein. Welche Schlüsselqualifikation zeigt sie?",
+  o:["Mobilität","Flexibilität","Kommunikationsfähigkeit","Sorgfalt"],a:0,
+  x:"Mobil = bereit, den ARBEITSORT zu wechseln (andere Filiale, Dienstreise)."},
+ {t:"mc",q:"Samira arbeitet sich freiwillig am Wochenende in das neue Kassenprogramm ein. Welche Schlüsselqualifikation zeigt sie?",
+  o:["Lernbereitschaft","Flexibilität","Mobilität","Teamfähigkeit"],a:0,
+  x:"Lernbereit = immer wieder Neues lernen. Das braucht man das ganze Berufsleben lang."},
+ {t:"mc",q:"Was ist KEINE Dienstleistung?",
+  o:["Möbel in einer Fabrik herstellen","Haare schneiden","Einen Bus fahren","Alte Menschen pflegen"],a:0,
+  x:"Dienstleistung = Arbeit für Menschen OHNE Warenproduktion. Möbel herstellen = Produktion."},
+ {t:"mc",q:"Welche Begründung für einen Zukunftsberuf ist stichhaltig?",
+  o:["Erzieher:in – viele Eltern sind berufstätig, der Betreuungsbedarf wächst, und Menschen bleiben dabei unersetzbar","Altenpfleger:in – weil es künftig immer weniger alte Menschen gibt","Elektroniker:in – weil bald nichts mehr gebaut oder installiert wird","Ein Beruf hat Zukunft, sobald Roboter ihn komplett übernehmen können"],a:0,
+  x:"Zukunft hat ein Beruf, wenn der BEDARF wächst und Maschinen ihn NICHT ersetzen können."},
+ {t:"tf",q:"Wenn Roboter einen Beruf komplett übernehmen können, hat dieser Beruf besonders gute Zukunft für Menschen.",
+  o:["Richtig","Falsch"],a:1,
+  x:"Umgekehrt: Solche Tätigkeiten fallen für Menschen eher weg. Zukunftssicher ist die Arbeit AM Menschen."}
+]}
+];
+
+/* ================= STATE ================= */
+const best=LEVELS.map(()=>null);
+let curLevel=-1, queue=[], qIdx=0, totalKeys=0, answered=false, isMix=false, firstTry={}, multiPicks={};
+const $=s=>document.querySelector(s);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){['home','quiz','done'].forEach(x=>$('#'+x).classList.add('hidden'));$('#'+id).classList.remove('hidden');window.scrollTo(0,0);}
+
+/* ================= HOME ================= */
+function goHome(){renderHome();show('home');}
+function renderHome(){
+  $('#levelList').innerHTML=LEVELS.map((lv,i)=>`
+    <button class="level" onclick="startLevel(${i})">
+      <span class="li">${lv.icon}</span>
+      <span class="lt"><b>${lv.name}</b><span>${lv.qs.length} Aufgaben</span></span>
+      <span class="stars">${best[i]===null?'':'★'.repeat(best[i])+'<span style="opacity:.25">'+'★'.repeat(3-best[i])+'</span>'}</span>
+    </button>`).join('')
+  +`<button class="level mix" onclick="startMix()">
+      <span class="li">🎯</span>
+      <span class="lt"><b>Prüfungs-Mix</b><span>15 zufällige Aufgaben aus allen Themen</span></span>
+      <span class="stars"></span>
+    </button>`;
+}
+
+/* ================= AUFGABEN VORBEREITEN ================= */
+function prepQuestion(src){
+  const q={t:src.t,q:src.q,x:src.x,key:src.q};
+  if(src.t==='tf'){q.o=[...src.o];q.a=src.a;}
+  else if(src.t==='mc'){
+    const idx=shuffle(src.o.map((_,i)=>i));
+    q.o=idx.map(i=>src.o[i]);
+    q.a=idx.indexOf(src.a);
+    q.src=src;
+  }else if(src.t==='multi'){
+    q.o=shuffle([...src.o]);
+    q.src=src;
+  }
+  return q;
+}
+function requeue(q){
+  // Frage neu mischen und hinten anhängen
+  if(q.t==='multi')queue.push(prepQuestion(q.src));
+  else if(q.t==='mc')queue.push(prepQuestion(q.src));
+  else queue.push(prepQuestion({t:'tf',q:q.q,o:q.o,a:q.a,x:q.x}));
+}
+
+/* ================= RUN ================= */
+function startLevel(i){
+  curLevel=i; isMix=false;
+  queue=shuffle([...LEVELS[i].qs]).map(prepQuestion);
+  beginRun(LEVELS[i].icon+' '+LEVELS[i].name);
+}
+function startMix(){
+  curLevel=-1; isMix=true;
+  const all=LEVELS.flatMap(l=>l.qs);
+  queue=shuffle([...all]).slice(0,15).map(prepQuestion);
+  beginRun('🎯 Prüfungs-Mix');
+}
+function beginRun(title){
+  qIdx=0; firstTry={}; totalKeys=queue.length;
+  $('#quizTitle').textContent=title;
+  show('quiz'); renderQuestion();
+}
+
+function renderQuestion(){
+  const q=queue[qIdx]; answered=false; multiPicks={};
+  $('#pbar').style.width=(100*qIdx/queue.length)+'%';
+  let html=(qIdx>=totalKeys?'<span id="repeatTag">🔁 Wiederholung</span> ':'');
+  if(q.t==='multi')html+='<span class="multitag">Mehrfachauswahl – wähle ALLE richtigen</span>';
+  html+=`<p id="qText">${q.q}</p>`;
+  if(q.t==='multi'){
+    html+=q.o.map((o,i)=>`<button class="opt" id="opt${i}" onclick="toggleMulti(${i})">${o.t}</button>`).join('');
+    html+=`<button id="checkBtn" onclick="checkMulti()">Prüfen</button>`;
+  }else{
+    html+=q.o.map((o,i)=>`<button class="opt" id="opt${i}" onclick="answerMC(${i})">${o}</button>`).join('');
+  }
+  html+=`<div id="fbArea"></div>`;
+  $('#qArea').innerHTML=html;
+}
+
+/* ---- Einfachauswahl ---- */
+function answerMC(i){
+  if(answered)return; answered=true;
+  const q=queue[qIdx];
+  const right=i===q.a;
+  registerResult(q,right);
+  q.o.forEach((_,k)=>{
+    const el=$('#opt'+k); el.disabled=true;
+    if(k===q.a)el.classList.add('right');
+    else if(k===i)el.classList.add('wrong');
+    else el.classList.add('faded');
+  });
+  showFeedback(q,right);
+}
+
+/* ---- Mehrfachauswahl ---- */
+function toggleMulti(i){
+  if(answered)return;
+  multiPicks[i]=!multiPicks[i];
+  $('#opt'+i).classList.toggle('picked',multiPicks[i]);
+}
+function checkMulti(){
+  if(answered)return; answered=true;
+  const q=queue[qIdx];
+  let right=true;
+  q.o.forEach((o,i)=>{
+    const el=$('#opt'+i); el.disabled=true;
+    el.classList.remove('picked');
+    const sel=!!multiPicks[i];
+    if(sel&&o.c)el.classList.add('right');
+    else if(sel&&!o.c){el.classList.add('wrong');right=false;}
+    else if(!sel&&o.c){el.classList.add('missed');right=false;}
+    else el.classList.add('faded');
+  });
+  $('#checkBtn').remove();
+  registerResult(q,right);
+  showFeedback(q,right,true);
+}
+
+/* ---- gemeinsam ---- */
+function registerResult(q,right){
+  if(firstTry[q.key]===undefined)firstTry[q.key]=right;
+  if(!right)requeue(q);
+}
+function showFeedback(q,right,isMulti){
+  $('#fbArea').innerHTML=`
+    <div id="explain" class="${right?'':'bad'}">
+      <b>${right?'Richtig!':'Nicht ganz.'}</b>${isMulti&&!right?'Gestrichelt = das hättest du auch wählen müssen. ':''}${q.x}
+    </div>
+    <button id="nextBtn" onclick="nextQuestion()">Weiter →</button>`;
+  $('#nextBtn').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextQuestion(){
+  qIdx++;
+  if(qIdx>=queue.length)finishLevel();
+  else renderQuestion();
+}
+
+/* ================= DONE ================= */
+function finishLevel(){
+  const n=Object.keys(firstTry).length;
+  const firstRight=Object.values(firstTry).filter(Boolean).length;
+  const wrong=n-firstRight;
+  const stars=wrong===0?3:(wrong<=2?2:1);
+  if(!isMix&&(best[curLevel]===null||stars>best[curLevel]))best[curLevel]=stars;
+  $('#dStars').innerHTML='★'.repeat(stars)+'<span style="opacity:.25">'+'★'.repeat(3-stars)+'</span>';
+  $('#dTitle').textContent=isMix?'Mix geschafft!':'Thema gemeistert!';
+  $('#dStats').textContent=firstRight+' von '+n+' Aufgaben im ersten Versuch richtig';
+  $('#dMsg').textContent=
+    stars===3?'Fehlerfrei auf Expert-Niveau – dieses Thema sitzt prüfungssicher.':
+    stars===2?'Stark. Die kniffligen Aufgaben hast du in der Wiederholung geknackt.':
+    'Die Fallen haben zugeschnappt – genau dafür ist das Training da. Wiederhole das Thema morgen noch einmal.';
+  const nb=$('#dNext');
+  if(isMix){nb.textContent='Neuen Mix starten';nb.onclick=startMix;}
+  else if(curLevel<LEVELS.length-1){nb.textContent='Nächstes Thema →';nb.onclick=()=>startLevel(curLevel+1);}
+  else{nb.textContent='🎯 Prüfungs-Mix starten';nb.onclick=startMix;}
+  show('done');
+}
+
+renderHome();
+</script>
+</body>
+</html>
